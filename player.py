@@ -5,13 +5,16 @@ from constants import (PLAYER_RADIUS,
                        PLAYER_TURN_SPEED,
                        PLAYER_SPEED,
                        PLAYER_SHOOT_SPEED,
-                       PLAYER_SHOOT_COOLDOWN,)
+                       PLAYER_SHOOT_COOLDOWN,
+                       PLAYER1,
+                       PLAYER2,)
 from shot import Shot
 
 
 class Player(CircleShape):
-    def __init__(self, x, y):
+    def __init__(self, x, y, player_num):
         super().__init__(x, y, PLAYER_RADIUS)
+        self.player_num = player_num
         self.rotation = 0
         self.timer = 0
 
@@ -36,17 +39,28 @@ class Player(CircleShape):
     def update(self, dt):
         self.timer -= dt
         keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_a]:
-            self.rotate(-dt)
-        if keys[pygame.K_d]:
-            self.rotate(dt)
-        if keys[pygame.K_w]:
-            self.move(dt)
-        if keys[pygame.K_s]:
-            self.move(-dt)
-        if keys[pygame.K_SPACE]:
-            self.shoot()
+        if self.player_num == PLAYER1:
+            if keys[pygame.K_a]:
+                self.rotate(-dt)
+            if keys[pygame.K_d]:
+                self.rotate(dt)
+            if keys[pygame.K_w]:
+                self.move(dt)
+            if keys[pygame.K_s]:
+                self.move(-dt)
+            if keys[pygame.K_SPACE]:
+                self.shoot()
+        elif self.player_num == PLAYER2:
+            if keys[pygame.K_LEFT]:
+                self.rotate(-dt)
+            if keys[pygame.K_RIGHT]:
+                self.rotate(dt)
+            if keys[pygame.K_UP]:
+                self.move(dt)
+            if keys[pygame.K_DOWN]:
+                self.move(-dt)
+            if keys[pygame.K_RETURN]:
+                self.shoot()
 
     def shoot(self):
         if not self.timer > 0:
