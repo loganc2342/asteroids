@@ -33,6 +33,13 @@ def main():
         help="add a second player to the game",
         action="store_true",
     )
+    """
+    parser.add_argument(
+        "-v", "--verbose",
+        help="give a detailed score breakdown upon game over",
+        action="store_true"
+    )
+    """
     args = parser.parse_args()
     
     pygame.init()
@@ -40,6 +47,7 @@ def main():
 
     clock = pygame.time.Clock()
     dt = 0
+    score = 0
 
     asteroids = pygame.sprite.Group()
     players = pygame.sprite.Group()
@@ -75,14 +83,19 @@ def main():
             for player in players:
                 if asteroid.check_collision(player):
                     player.kill()
-                    
+
                     if len(players) == 0:
-                        print("\nGame over!\n")
+                        print("\nGame over!")
+                        print(f"Score: {score}\n")
                         sys.exit()
 
             for shot in shots:
                 if shot.check_collision(asteroid):
                     shot.kill()
+                    try:
+                        score += __give_points(asteroid)
+                    except Exception as e:
+                        print(f"WARN: {e}")
                     asteroid.split()
 
         screen.fill("black")
@@ -92,6 +105,19 @@ def main():
 
         pygame.display.flip()
         dt = clock.tick(60) / 1000
+
+
+def __give_points(asteroid):
+    kind = asteroid.radius / ASTEROID_MIN_RADIUS
+    
+    if kind == SMALL_KIND:
+        return 100
+    elif kind == MEDIUM_KIND:
+        return 50
+    elif kind == LARGE_KIND:
+        return 20
+    else:
+        raise Exception("unknown asteroid kind")
 
 
 if __name__ == "__main__":
