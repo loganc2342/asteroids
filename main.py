@@ -77,7 +77,7 @@ def main():
                     player.kill()
                     
                     if len(players) == 0:
-                        print("\nGame over!")
+                        print("\nGame over!\n")
                         sys.exit()
 
             for shot in shots:
