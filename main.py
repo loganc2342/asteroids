@@ -93,6 +93,21 @@ def main():
                         else:
                             print(f"Score: {score}\n")
 
+                        try:
+                            with open("highscore.txt", "x") as f:
+                                f.write(f"High Score: {score}\n\n--NO CHEATING--")
+                        except Exception:
+                            with open("highscore.txt", "r") as f:
+                                score_line = f.read()
+                            
+                            score_line = score_line.split()
+                            high_score = int(score_line[2])
+
+                            if score > high_score:
+                                print("New high score!\n")
+                                with open("highscore.txt", "w") as f:
+                                    f.write(f"High Score: {score}\n\n--NO CHEATING--")
+
                         sys.exit()
 
             for shot in shots:
